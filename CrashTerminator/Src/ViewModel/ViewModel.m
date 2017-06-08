@@ -34,12 +34,17 @@ static NSString *const kSymbolicateCrashPathKey = @"kSymbolicateCrashPathKey";
 
 + (void)prepareEnvironmentVariables:(void (^)(BOOL success))completion{
     NSUserDefaults *userDefault = [NSUserDefaults standardUserDefaults];
-    NSString *str = [userDefault valueForKey:kSymbolicateCrashPathKey];
-    if (str && str.length >0) {
-        completion(YES);
-        return;
+    NSNumber *version = [userDefault valueForKey:@"version"];
+    if (!version) {
+        [userDefault removeObjectForKey:@"kSymbolicateCrashPathKey"];
+        [userDefault setValue:@(1.1) forKey:@"version"];
+    }else{
+        NSString *str = [userDefault valueForKey:kSymbolicateCrashPathKey];
+        if (str && str.length >0) {
+            completion(YES);
+            return;
+        }
     }
-    
     NSString *scriptPath = scriptPathInMainBundle(@"PrepareEnvironmentVariables");
     [ScriptTaskHandler invokeTaskWithScriptPath:scriptPath executing:^(NSString *output) {
         [userDefault setValue:output forKey:kSymbolicateCrashPathKey];

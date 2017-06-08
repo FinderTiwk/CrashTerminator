@@ -12,4 +12,4 @@
 #  Created by _Finder丶Tiwk on 16/8/14.
 #  Copyright © 2016年 _Finder丶Tiwk. All rights reserved.
 
-find /Applications/Xcode.app -name symbolicatecrash -type f
+find /Applications/Xcode.app/Contents/SharedFrameworks -name symbolicatecrash -type f
